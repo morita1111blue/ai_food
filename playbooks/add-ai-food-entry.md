@@ -16,6 +16,16 @@ confidence: high
 6. 秘密情報を検索する。
 7. commit/pushする。
 
+## Deduplication
+
+Before creating a new entry, read the existing Markdown files under `intake`, `findings`, `rules`, and `playbooks`.
+
+- If the same or very similar knowledge already exists, do not create a new file.
+- If the new observation strengthens or clarifies an existing entry, update that file instead.
+- If the existing entry conflicts with the new observation, stop and ask the user before editing.
+- Prefer one durable rule or playbook over many near-duplicate intake notes.
+- For automated maintenance, only self-commit high-confidence, non-sensitive, non-duplicate updates that fit the existing structure. Ask first when uncertain.
+
 ## Minimal Secret Check
 
 ```bash
