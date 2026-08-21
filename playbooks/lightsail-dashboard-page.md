@@ -29,6 +29,27 @@ rsync -az dashboard/new-page/index.html hyperliquid-lightsail:/home/ubuntu/hyper
 ssh hyperliquid-lightsail "sudo systemctl restart hyperliquid-dashboard.service"
 ```
 
+
+## Narrow Static-Only Deploy
+
+If a full deploy script has broad side effects such as `rsync --delete`, dependency installation, systemd unit installation, timer changes, or background collector starts, do not use it for a static page-only change.
+
+For a static page and top-page link, transfer only the changed files, then restart only the dashboard process. If shell quoting becomes fragile, write a short remote deploy script and upload that script instead of building a long nested SSH command.
+
+```bash
+tar -czf /tmp/page-update.tar.gz dashboard/index.html dashboard/new-page/index.html
+scp /tmp/page-update.tar.gz hyperliquid-lightsail:/tmp/page-update.tar.gz
+scp /tmp/remote-deploy.sh hyperliquid-lightsail:/tmp/remote-deploy.sh
+ssh hyperliquid-lightsail 'bash /tmp/remote-deploy.sh; rm -f /tmp/remote-deploy.sh'
+```
+
+Verify the external URL after the restart:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" http://100.74.138.70:8080/status
+curl -s -o /dev/null -w "%{http_code}\n" http://100.74.138.70:8080/new-page/
+```
+
 ## Verify
 
 ```bash
