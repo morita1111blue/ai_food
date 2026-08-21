@@ -34,6 +34,26 @@ confidence: high
 shares = allowed_loss / abs(entry_price - invalidation_price)
 ```
 
+## Behavioral Validation
+
+ポジションサイズは、損失額だけでなく「無効化点まで通常通り保有できるか」で検証する。
+
+ロットを増やした結果、同一セットアップなのに普段より早く切るなら、そのロットは大きすぎる。
+
+```text
+same setup + larger size + earlier exit before invalidation
+= sizing failure
+```
+
+サイズ変更で出口判断が変わる場合、数式上は許容損失内でも、実運用上は無効化点まで保有できていない。
+
+## Review Questions
+
+- 通常サイズなら無効化点まで待てたか
+- 大きいロットにしたことで、価格ノイズを損切り理由に変えていないか
+- ストップ位置はシナリオ無効化点か、心理的に耐えられる位置か
+- 同じセットアップを小さいサイズで取った場合、出口判断は変わるか
+
 ## Avoid
 
 - 取りたいロットから逆算してストップを狭くする
